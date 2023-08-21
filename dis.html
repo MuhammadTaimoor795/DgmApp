@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QR Code Viewer</title>
+  </head>
+  <body>
+    <script>
+      const base64Data =
+        "iVBORw0KGgoAAAANSUhEUgAAAHQAAAB0CAYAAABUmhYnAAAAAklEQVR4AewaftIAAAKkSURBVO3BQW7sWAwEwSxC979yjpdcPUCQur/NYUT8wRqjWKMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFGKdYoFw8l4ZtU7kjCHSpdEr5J5YlijVKsUYo1ysXLVN6UhDepdEm4Q+VNSXhTsUYp1ijFGuXiw5Jwh8odSXhC5Ykk3KHyScUapVijFGuUi2FUTpJwovKXFWuUYo1SrFEuhkvC/0mxRinWKMUa5eLDVL4pCScqXRKeUPlNijVKsUYp1igXL0vCv6TSJeFNSfjNijVKsUYp1igXD6n8ZipdEu5Q+UuKNUqxRinWKBcPJaFT6ZLwJpVO5Q6VLgknSXiTyicVa5RijVKsUS5eloRO5U1JuEPljiScqHRJOFHpktCpvKlYoxRrlGKNcvGQyhNJ6FS6JHQqXRLuSEKnckcSOpUuCf9SsUYp1ijFGiX+4IEkdCp3JKFTeSIJJyonSXhCpUtCp9IloVN5olijFGuUYo0Sf/BAEjqVLgknKl0STlS6JHQqXRJOVE6ScKLymxRrlGKNUqxR4g/+sCS8SaVLwonKHUk4UXmiWKMUa5RijRJ/8EASvknlJAmdykkSTlS6JHQqXRI6lW8q1ijFGqVYo1y8TOVNSThJwh1JOFG5IwmdSpeEO1SeKNYoxRqlWKNcfFgS7lB5QuVEpUtCl4ROpVM5ScKJyicVa5RijVKsUS6GS0Kn8kkqXRK+qVijFGuUYo1yMUwSTpLQqdyRhBOVf6lYoxRrlGKNcvFhKp+k0iWhU3mTSpeE36RYoxRrlGKNcvGyJHxTEjqVLgknKnckoVPpktCpdEnoVN5UrFGKNUqxRok/WGMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFGKdYoxRrlP+2g/Of1mxRWAAAAAElFTkSuQmCC"; // Your base64 data here
+      const binaryData = atob(base64Data);
+
+      const img = document.createElement("img");
+      img.src = "data:image/png;base64," + base64Data;
+      document.body.appendChild(img);
+    </script>
+  </body>
+</html>
