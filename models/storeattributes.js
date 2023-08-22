@@ -30,6 +30,11 @@ module.exports = (sequelize, DataTypes) => {
           throw new Error("Do not set lastUpdate manually.");
         },
       },
+      updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
     },
     {
       sequelize,
