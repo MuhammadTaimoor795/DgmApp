@@ -25,7 +25,7 @@ router.get("/store", defaultScreen);
 // router.post("/login", validationSchema(schemas.user.login), login);
 // router.post("/verifyOtp", validationSchema(schemas.user.verifyOtp), verifyOTP);
 
-router.post("/register", validationSchema(schemas.user.update), auth, register);
+router.post("/register", register);
 
 router.post("/luckdraw", auth, submitLuckyDraw);
 

@@ -499,25 +499,44 @@ module.exports = {
   },
   register: async (req, res, next) => {
     try {
-      let userid = req.user.id;
-      let { name, email, age } = req.body;
+      let { name, email, age, phone, otp } = req.body;
 
-      let updateUser = await models.User.update(
+      let register = await models.User.create({
+        name,
+        email,
+        age,
+        ph: phone,
+      });
+
+      let findOTP = await models.VendorTransaction.findOne({
+        where: {
+          otp,
+        },
+        include: [
+          {
+            model: models.Store,
+          },
+        ],
+      });
+      let updateTranscation = await models.VendorTransaction.update(
         {
-          name,
-          email,
-          age,
+          UserId: register.id,
+          codeSubmission: new Date().toISOString(),
+          otp: null,
         },
         {
           where: {
-            id: userid,
+            id: findOTP.id,
           },
         }
       );
-      if (updateUser[0] === 1) {
-        return res
-          .status(200)
-          .json(success("User registered Successfully", res.statusCode));
+
+      if (updateTranscation[0] === 1) {
+        let message = `Thank you ${register.name} for Shopping at ${findOTP.Store.name} for amount ${findOTP.billingAmount} rupees  . 1 Ticket have been successfully Added to your account`;
+        // return res
+        //   .status(200)
+        //   .json(success({ status: 200, message }, res.statusCode));
+        return res.status(200).json({ status: 200, message });
       }
     } catch (error) {
       if (error.status === undefined) {
