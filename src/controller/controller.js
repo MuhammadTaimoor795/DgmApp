@@ -532,11 +532,11 @@ module.exports = {
       );
 
       if (updateTranscation[0] === 1) {
-        let message = `Thank you ${register.name} for Shopping at ${findOTP.Store.name} for amount ${findOTP.billingAmount} rupees  . 1 Ticket have been successfully Added to your account`;
+        //let message = `Thank you ${register.name} for Shopping at ${findOTP.Store.name} for amount ${findOTP.billingAmount} rupees  . 1 Ticket have been successfully Added to your account`;
         // return res
         //   .status(200)
         //   .json(success({ status: 200, message }, res.statusCode));
-        return res.status(200).json({ status: 200, message });
+        return res.status(200).json({ status: 200, name: register.name });
       }
     } catch (error) {
       if (error.status === undefined) {
