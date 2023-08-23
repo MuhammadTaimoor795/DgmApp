@@ -587,6 +587,7 @@ module.exports = {
         content: {
           //mediaUrl: "https://dom-api.ncu.io/public/assets/profileImage.png",
           mediaUrl: sendfile,
+          caption: "Ask your Customer to Scan this QrCode",
         },
         to: from,
       });
