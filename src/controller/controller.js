@@ -11,6 +11,7 @@ const sdk = require("api")("@doubletick/v2.0#leuafj3htll6tmgcx");
 const path = require("path");
 const qr = require("qrcode");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
 const staticKey = Buffer.from(
   "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
   "hex"
@@ -560,6 +561,16 @@ module.exports = {
 
       // Generate QR code and save it as an image file
       const currentDate = new Date().getTime();
+      const directoryPath = path.join(__dirname, "../../public/");
+
+      // Check if the directory exists
+      if (!fs.existsSync(directoryPath)) {
+        // If it doesn't exist, create it
+        fs.mkdirSync(directoryPath);
+        console.log(`Directory "${directoryPath}" created.`);
+      } else {
+        console.log(`Directory "${directoryPath}" already exists.`);
+      }
 
       let pth = path.join(__dirname, `../../public/${currentDate}.png`);
 

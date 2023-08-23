@@ -1,5 +1,5 @@
 {
-  "development": {
+  "developments": {
     "username": "u633667574_try1",
     "password": "Abcd1234@1",
     "database": "u633667574_try1",
@@ -30,7 +30,7 @@
       "timestamps": false
     }
   },
-  "developments": {
+  "development": {
     "username": "root",
     "password": "",
     "database": "india",
