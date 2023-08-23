@@ -530,26 +530,57 @@ module.exports = {
 
   venderAddTrans: async (req, res, next) => {
     try {
-      let { invoice, billamount, store } = req.body;
+      let { invoice, billamount, from } = req.body;
 
+      let findVender = await models.User.findOne({
+        where: {
+          ph: from,
+        },
+      });
+
+      console.log("findVender", findVender.id);
+      let findVenderStore = await models.Store.findOne({
+        where: {
+          UserId: findVender.id,
+        },
+      });
+
+      console.log("findVenderStore", findVenderStore.id);
       let newtrans = await models.VendorTransaction.create({
         invoice,
         billingAmount: billamount,
-        StoreId: store,
+        StoreId: findVenderStore.id,
       });
 
-      let qrData = `https://wa.me/919100082008?text=${newtrans.id}_${newtrans.invoice}`;
+      let qrData = `https://wa.me/919100082008?text=This is My Transction details=${newtrans.id}_${newtrans.invoice}`;
       const qrOptions = {
         width: 200, // Specify the desired width (in pixels)
         margin: 0, // Set margin to 0
       };
 
       // Generate QR code and save it as an image file
-      const qrImageFilePath = path.join(__dirname, "qrcode.png");
+      const currentDate = new Date().getTime();
+
+      let pth = path.join(__dirname, `../../public/${currentDate}.png`);
+
+      const qrImageFilePath = pth;
       await qr.toFile(qrImageFilePath, qrData, qrOptions);
 
-      // Send the QR code image file as a response
-      res.sendFile(qrImageFilePath);
+      let sendfile = `${process.env.HOST}/${currentDate}.png`;
+      console.log("Send File", sendfile);
+      /// Sending Messae
+      const sdk = require("api")("@doubletick/v2.0#leuafj3htll6tmgcx");
+
+      sdk.auth("key_7LsVKlBnJT");
+      let sendimage = await sdk.outgoingMessagesWhatsappImage({
+        content: {
+          mediaUrl: "https://dom-api.ncu.io/public/assets/profileImage.png",
+          // mediaUrl: sendfile,
+        },
+        to: from,
+      });
+
+      return res.json({ status: sendimage.status });
     } catch (error) {
       if (error.status === undefined) {
         error.status = 500;

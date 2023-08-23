@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 
       User.hasMany(models.Transaction);
       User.hasMany(models.VendorTransaction);
+      User.hasOne(models.Store);
     }
   }
   User.init(

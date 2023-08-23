@@ -12,6 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       Store.hasMany(models.Post);
       Store.hasMany(models.StoreAttributes);
       Store.hasMany(models.VendorTransaction);
+
+      Store.belongsTo(models.User);
     }
   }
   Store.init(

@@ -71,7 +71,7 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(express.static(path.join(__dirname, "/public/assets")));
+app.use(express.static(path.join(__dirname, "/public")));
 
 // Routes & controllers
 app.get("/api", (req, res) => res.json({ msg: " Testinh Api" })),
@@ -89,8 +89,8 @@ app.use(function (req, res, next) {
 app.use(errorHandler);
 
 // Get values from env vars or defaults where not provided
-let port = process.env.PORT || 80;
-
+//let port = process.env.PORT || 80;
+let port = 3003;
 // Start the server
 app.listen(port, async () => {
   console.log(`Server Started on port ${port}`);
@@ -169,12 +169,12 @@ function decryptText(encryptedText) {
   return decrypted;
 }
 
-// Example usage
-const originalText = "1_inv123";
+// // Example usage
+// const originalText = "1_inv123";
 
-//Encrypt the text
-const encryptedText = encryptText(originalText);
-console.log("Encrypted Text:", encryptedText);
+// //Encrypt the text
+// const encryptedText = encryptText(originalText);
+// console.log("Encrypted Text:", encryptedText);
 
 // // let encryptedText =
 // //   "cfa0aedb92ec290a6a796bcf24bbf4d1bcb840c076d5473645fda0ba9158fa27";

@@ -33,8 +33,9 @@
   "developments": {
     "username": "root",
     "password": "",
-    "database": "qbanks",
+    "database": "india",
     "host": "localhost",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "logging": false
   }
 }
