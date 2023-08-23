@@ -547,52 +547,46 @@ module.exports = {
       });
 
       console.log("findVenderStore", findVenderStore.id);
+
+      console.log("Sraring wgil");
+      let otp = generateOTP6digit();
+      // while (1) {
+      //   opt = generateOTP6digit();
+      //   console.log("genereated Oprt", opt);
+      //   console.log("finding OTP");
+
+      //   let findotp = await models.VendorTransaction.findOne({
+      //     where: {
+      //       otp: otp,
+      //     },
+      //   });
+
+      //   console.log("findotp findotp", findotp);
+      //   if (!findotp) {
+      //     break;
+      //   }
+      // }
+
       let newtrans = await models.VendorTransaction.create({
         invoice,
         billingAmount: billamount,
         StoreId: findVenderStore.id,
+        otp,
       });
 
-      let qrData = `https://wa.me/919100082008?text=This is My Transction details=${newtrans.id}_${newtrans.invoice}`;
-      const qrOptions = {
-        width: 200, // Specify the desired width (in pixels)
-        margin: 0, // Set margin to 0
-      };
+      if (newtrans) {
+        const sdk = require("api")("@doubletick/v2.0#leuafj3htll6tmgcx");
 
-      // Generate QR code and save it as an image file
-      const currentDate = new Date().getTime();
-      const directoryPath = path.join(__dirname, "../../public/");
+        sdk.auth("key_7LsVKlBnJT");
 
-      // Check if the directory exists
-      if (!fs.existsSync(directoryPath)) {
-        // If it doesn't exist, create it
-        fs.mkdirSync(directoryPath);
-        console.log(`Directory "${directoryPath}" created.`);
-      } else {
-        console.log(`Directory "${directoryPath}" already exists.`);
+        let sendOpt = await sdk.outgoingMessagesWhatsappText({
+          content: { text: `Generated OTP for User is ${otp}` },
+          to: from,
+        });
+
+        return res.json({ status: sendOpt.status });
       }
-
-      let pth = path.join(__dirname, `../../public/${currentDate}.png`);
-
-      const qrImageFilePath = pth;
-      await qr.toFile(qrImageFilePath, qrData, qrOptions);
-
-      let sendfile = `${process.env.HOST}/${currentDate}.png`;
-      console.log("Send File", sendfile);
       /// Sending Messae
-      const sdk = require("api")("@doubletick/v2.0#leuafj3htll6tmgcx");
-
-      sdk.auth("key_7LsVKlBnJT");
-      let sendimage = await sdk.outgoingMessagesWhatsappImage({
-        content: {
-          //mediaUrl: "https://dom-api.ncu.io/public/assets/profileImage.png",
-          mediaUrl: sendfile,
-          caption: "Ask your Customer to Scan this QrCode",
-        },
-        to: from,
-      });
-
-      return res.json({ status: sendimage.status });
     } catch (error) {
       if (error.status === undefined) {
         error.status = 500;
@@ -602,6 +596,80 @@ module.exports = {
         .json(errorResponse(error.message, error.status));
     }
   },
+  // this code is for sending QRcode
+  // venderAddTransQR: async (req, res, next) => {
+  //   try {
+  //     let { invoice, billamount, from } = req.body;
+
+  //     let findVender = await models.User.findOne({
+  //       where: {
+  //         ph: from,
+  //       },
+  //     });
+
+  //     console.log("findVender", findVender.id);
+  //     let findVenderStore = await models.Store.findOne({
+  //       where: {
+  //         UserId: findVender.id,
+  //       },
+  //     });
+
+  //     console.log("findVenderStore", findVenderStore.id);
+  //     let newtrans = await models.VendorTransaction.create({
+  //       invoice,
+  //       billingAmount: billamount,
+  //       StoreId: findVenderStore.id,
+  //     });
+
+  //     let qrData = `https://wa.me/919100082008?text=This is My Transction details=${newtrans.id}_${newtrans.invoice}`;
+  //     const qrOptions = {
+  //       width: 200, // Specify the desired width (in pixels)
+  //       margin: 0, // Set margin to 0
+  //     };
+
+  //     // Generate QR code and save it as an image file
+  //     const currentDate = new Date().getTime();
+  //     const directoryPath = path.join(__dirname, "../../public/");
+
+  //     // Check if the directory exists
+  //     if (!fs.existsSync(directoryPath)) {
+  //       // If it doesn't exist, create it
+  //       fs.mkdirSync(directoryPath);
+  //       console.log(`Directory "${directoryPath}" created.`);
+  //     } else {
+  //       console.log(`Directory "${directoryPath}" already exists.`);
+  //     }
+
+  //     let pth = path.join(__dirname, `../../public/${currentDate}.png`);
+
+  //     const qrImageFilePath = pth;
+  //     await qr.toFile(qrImageFilePath, qrData, qrOptions);
+
+  //     let sendfile = `${process.env.HOST}/${currentDate}.png`;
+  //     console.log("Send File", sendfile);
+  //     /// Sending Messae
+  //     const sdk = require("api")("@doubletick/v2.0#leuafj3htll6tmgcx");
+
+  //     sdk.auth("key_7LsVKlBnJT");
+  //     let sendimage = await sdk.outgoingMessagesWhatsappImage({
+  //       content: {
+  //         //mediaUrl: "https://dom-api.ncu.io/public/assets/profileImage.png",
+  //         mediaUrl: sendfile,
+  //         caption: "Ask your Customer to Scan this QrCode",
+  //       },
+  //       to: from,
+  //     });
+
+  //     return res.json({ status: sendimage.status });
+  //   } catch (error) {
+  //     if (error.status === undefined) {
+  //       error.status = 500;
+  //     }
+  //     return res
+  //       .status(error.status)
+  //       .json(errorResponse(error.message, error.status));
+  //   }
+  // },
 };
 function encryptText(text) {
   const cipher = crypto.createCipheriv("aes-256-cbc", staticKey, staticIV);
@@ -619,6 +687,17 @@ function decryptText(encryptedText) {
 }
 function generateOTP() {
   return Math.floor(1000 + Math.random() * 9000);
+}
+
+function generateOTP6digit() {
+  const otpLength = 6;
+  let otp = "";
+
+  for (let i = 0; i < otpLength; i++) {
+    otp += Math.floor(Math.random() * 10);
+  }
+
+  return otp;
 }
 
 // const crypto = require("crypto");

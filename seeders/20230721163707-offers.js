@@ -106,9 +106,9 @@ module.exports = {
         });
       }
 
-      await models.VendorTransaction.create({
-        invoice: "inv123",
-      });
+      // await models.VendorTransaction.create({
+      //   invoice: "inv123",
+      // });
 
       let usertest = await models.User.create({
         name: `UserTest`,
@@ -169,6 +169,59 @@ module.exports = {
           rank: getRandomNumber(1, 10),
           StoreId: store.id,
         });
+      }
+
+      let usertest1 = await models.User.create({
+        name: `UserTest2`,
+        ph: `918008974581`,
+        type: "Vendor",
+      });
+      let store2 = await models.Store.create({
+        name: `store Testing`,
+        UserId: usertest1.id,
+        // stories: "Sdn",
+        // category: "Kid",
+        // floor: i,
+        // priceRange: "100-500",
+        // rank: getRandomNumber(1, 10),
+      });
+
+      for (let i = 1; i <= 5; i++) {
+        if (i == 1) {
+          await models.StoreAttributes.create({
+            name: "stories",
+            value: "Sdn",
+            StoreId: store.id,
+          });
+        }
+        if (i == 2) {
+          await models.StoreAttributes.create({
+            name: "category",
+            value: "Kid",
+            StoreId: store.id,
+          });
+        }
+        if (i == 3) {
+          await models.StoreAttributes.create({
+            name: "floor",
+            value: `${i}`,
+            StoreId: store.id,
+          });
+        }
+        if (i == 4) {
+          await models.StoreAttributes.create({
+            name: "priceRange",
+            value: `100-500`,
+            StoreId: store.id,
+          });
+        }
+        if (i == 5) {
+          await models.StoreAttributes.create({
+            name: "rank",
+            value: `${getRandomNumber(1, 10)}`,
+            StoreId: store.id,
+          });
+        }
       }
     } catch (error) {
       console.log("Error", error);

@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: DataTypes.NOW,
       },
+      otp: {
+        type: DataTypes.STRING,
+        // allowNull: false,
+      },
       codeSubmission: {
         type: DataTypes.DATE,
         // allowNull: false,

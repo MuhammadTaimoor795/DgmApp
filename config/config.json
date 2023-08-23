@@ -35,7 +35,6 @@
     "password": "",
     "database": "india",
     "host": "localhost",
-    "dialect": "mysql",
-    "logging": false
+    "dialect": "mysql"
   }
 }
