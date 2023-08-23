@@ -11,6 +11,8 @@ const {
   verifyOTP,
   register,
   venderAddTrans,
+  findUser,
+  UserLuckyOTP,
 } = require("../controller/controller");
 
 router.post("/transcation", newtrans);
@@ -28,5 +30,8 @@ router.post("/register", validationSchema(schemas.user.update), auth, register);
 router.post("/luckdraw", auth, submitLuckyDraw);
 
 router.post("/vendor", venderAddTrans);
+
+router.get("/User/:ph", findUser);
+router.post("/user/otp", UserLuckyOTP);
 
 module.exports = router;

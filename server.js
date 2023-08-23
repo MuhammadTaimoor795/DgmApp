@@ -77,8 +77,6 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.get("/api", (req, res) => res.json({ msg: " Testinh Api" })),
   app.use("/api", require("./src/routes/route"));
 
-// app.use("/admin", require("./src/routes/admin"));
-
 // Catch all route, generate an error & forward to error handler
 app.use(function (req, res, next) {
   let err = new Error("Not Found");

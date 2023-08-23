@@ -670,7 +670,101 @@ module.exports = {
   //       .json(errorResponse(error.message, error.status));
   //   }
   // },
+
+  findUser: async (req, res, next) => {
+    try {
+      let ph = req.params.ph;
+
+      let findUser = await models.User.findOne({
+        where: {
+          ph,
+        },
+      });
+
+      if (findUser) {
+        return res
+          .status(200)
+          .json(success({ status: 200, User: findUser.name }, res.statusCode));
+      } else {
+        return res.status(200).json(success({ status: 404 }, res.statusCode));
+      }
+    } catch (error) {
+      if (error.status === undefined) {
+        error.status = 500;
+      }
+      return res
+        .status(error.status)
+        .json(errorResponse(error.message, error.status));
+    }
+  },
+
+  UserLuckyOTP: async (req, res, next) => {
+    try {
+      let { otp, phone } = req.body;
+
+      // find OTP
+      let findOTP = await models.VendorTransaction.findOne({
+        where: {
+          otp,
+        },
+        include: [
+          {
+            model: models.Store,
+          },
+        ],
+      });
+      //console.log("fidnopt", findOTP);
+      //return res.status(200).json(success(findOTP, res.statusCode));
+      if (!findOTP) {
+        return res
+          .status(200)
+          .json(
+            success({ status: 500, message: "Invalid OTP" }, res.statusCode)
+          );
+      } else {
+        let findUser = await models.User.findOne({
+          where: {
+            ph: phone,
+          },
+        });
+        if (findUser) {
+          let updateTranscation = await models.VendorTransaction.update(
+            {
+              UserId: findUser.id,
+              codeSubmission: new Date().toISOString(),
+              otp: null,
+            },
+            {
+              where: {
+                id: findOTP.id,
+              },
+            }
+          );
+
+          if (updateTranscation[0] === 1) {
+            let message = `Thank you ${findUser.name} for Shopping at ${findOTP.Store.name} for amount ${findOTP.billingAmount} rupees  . 1 Ticket have been successfully Added to your account`;
+            return res
+              .status(200)
+              .json(success({ status: 200, message }, res.statusCode));
+          }
+        } else {
+          let message = `Thank for Shopping at ${findOTP.Store.name} for amount ${findOTP.billingAmount} rupees . Please Help us with few details to setup your account `;
+          return res
+            .status(200)
+            .json(success({ status: 404, message }, res.statusCode));
+        }
+      }
+    } catch (error) {
+      if (error.status === undefined) {
+        error.status = 500;
+      }
+      return res
+        .status(error.status)
+        .json(errorResponse(error.message, error.status));
+    }
+  },
 };
+
 function encryptText(text) {
   const cipher = crypto.createCipheriv("aes-256-cbc", staticKey, staticIV);
   let encrypted = cipher.update(text, "utf-8", "hex");
@@ -698,6 +792,15 @@ function generateOTP6digit() {
   }
 
   return otp;
+}
+
+async function SendMessage(from, message) {
+  sdk.auth("key_7LsVKlBnJT");
+
+  let sendMessage = await sdk.outgoingMessagesWhatsappText({
+    content: { text: message },
+    to: from,
+  });
 }
 
 // const crypto = require("crypto");
