@@ -716,11 +716,13 @@ module.exports = {
       //console.log("fidnopt", findOTP);
       //return res.status(200).json(success(findOTP, res.statusCode));
       if (!findOTP) {
-        return res
-          .status(200)
-          .json(
-            success({ status: 500, message: "Invalid OTP" }, res.statusCode)
-          );
+        // return res
+        //   .status(200)
+        //   .json(
+        //     success({ status: 500, message: "Invalid OTP" }, res.statusCode)
+        //   );
+
+        return res.status(200).json({ status: 500, message: "Invalid OTP" });
       } else {
         let findUser = await models.User.findOne({
           where: {
@@ -743,15 +745,19 @@ module.exports = {
 
           if (updateTranscation[0] === 1) {
             let message = `Thank you ${findUser.name} for Shopping at ${findOTP.Store.name} for amount ${findOTP.billingAmount} rupees  . 1 Ticket have been successfully Added to your account`;
-            return res
-              .status(200)
-              .json(success({ status: 200, message }, res.statusCode));
+            // return res
+            //   .status(200)
+            //   .json(success({ status: 200, message }, res.statusCode));
+
+            return res.status(200).json({ status: 200, message });
           }
         } else {
           let message = `Thank for Shopping at ${findOTP.Store.name} for amount ${findOTP.billingAmount} rupees . Please Help us with few details to setup your account `;
-          return res
-            .status(200)
-            .json(success({ status: 404, message }, res.statusCode));
+          // return res
+          //   .status(200)
+          //   .json(success({ status: 404, message }, res.statusCode));
+
+          return res.status(200).json({ status: 404, message });
         }
       }
     } catch (error) {
