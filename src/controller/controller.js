@@ -585,8 +585,8 @@ module.exports = {
       sdk.auth("key_7LsVKlBnJT");
       let sendimage = await sdk.outgoingMessagesWhatsappImage({
         content: {
-          mediaUrl: "https://dom-api.ncu.io/public/assets/profileImage.png",
-          // mediaUrl: sendfile,
+          //mediaUrl: "https://dom-api.ncu.io/public/assets/profileImage.png",
+          mediaUrl: sendfile,
         },
         to: from,
       });
