@@ -25,13 +25,13 @@ router.get("/store", defaultScreen);
 // router.post("/login", validationSchema(schemas.user.login), login);
 // router.post("/verifyOtp", validationSchema(schemas.user.verifyOtp), verifyOTP);
 
-router.post("/useradd", register);
-
 router.post("/luckdraw", auth, submitLuckyDraw);
 
+// New One
 router.post("/vendor", venderAddTrans);
 
 router.get("/User/:ph", findUser);
 router.post("/user/otp", UserLuckyOTP);
+router.post("/register", register);
 
 module.exports = router;

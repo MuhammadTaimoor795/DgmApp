@@ -501,6 +501,10 @@ module.exports = {
     try {
       let { name, email, age, phone, otp } = req.body;
 
+      return res
+        .status(200)
+        .json({ status: 200, name, email, age, phone, otp });
+
       let register = await models.User.create({
         name,
         email,
@@ -536,7 +540,7 @@ module.exports = {
         // return res
         //   .status(200)
         //   .json(success({ status: 200, message }, res.statusCode));
-        return res.status(200).json({ status: 200, name: register.name });
+        return res.status(200).json({ status: 200 });
       }
     } catch (error) {
       if (error.status === undefined) {
