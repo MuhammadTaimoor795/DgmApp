@@ -569,9 +569,9 @@ module.exports = {
         },
       });
 
-      console.log("findVenderStore", findVenderStore.id);
+      // console.log("findVenderStore", findVenderStore);
 
-      console.log("Sraring wgil");
+      //console.log("Sraring wgil");
       let otp = generateOTP6digit();
       // while (1) {
       //   opt = generateOTP6digit();
@@ -598,16 +598,21 @@ module.exports = {
       });
 
       if (newtrans) {
-        const sdk = require("api")("@doubletick/v2.0#leuafj3htll6tmgcx");
+        // const sdk = require("api")("@doubletick/v2.0#leuafj3htll6tmgcx");
 
-        sdk.auth("key_7LsVKlBnJT");
+        // sdk.auth("key_7LsVKlBnJT");
 
-        let sendOpt = await sdk.outgoingMessagesWhatsappText({
-          content: { text: `Generated OTP for User is ${otp}` },
-          to: from,
+        // console.log("OT", otp);
+        // let sendOpt = await sdk.outgoingMessagesWhatsappText({
+        //   content: { text: `Generated OTP for User is ${otp}` },
+        //   to: from,
+        // });
+
+        // console.log("sendOpt", sendOpt);
+        return res.json({
+          status: 201,
+          text: `Generated OTP for User is ${otp}`,
         });
-
-        return res.json({ status: sendOpt.status });
       }
       /// Sending Messae
     } catch (error) {

@@ -13,7 +13,8 @@ module.exports = {
      *   name: 'John Doe',
      *   isBetaMember: false
      * }], {});
-     */ await sequelize.sync({ force: true, alter: true });
+     */
+    await sequelize.sync({ force: true, alter: true });
 
     try {
       // for (let i = 1; i <= 3; i++) {
@@ -191,35 +192,35 @@ module.exports = {
           await models.StoreAttributes.create({
             name: "stories",
             value: "Sdn",
-            StoreId: store.id,
+            StoreId: store2.id,
           });
         }
         if (i == 2) {
           await models.StoreAttributes.create({
             name: "category",
             value: "Kid",
-            StoreId: store.id,
+            StoreId: store2.id,
           });
         }
         if (i == 3) {
           await models.StoreAttributes.create({
             name: "floor",
             value: `${i}`,
-            StoreId: store.id,
+            StoreId: store2.id,
           });
         }
         if (i == 4) {
           await models.StoreAttributes.create({
             name: "priceRange",
             value: `100-500`,
-            StoreId: store.id,
+            StoreId: store2.id,
           });
         }
         if (i == 5) {
           await models.StoreAttributes.create({
             name: "rank",
             value: `${getRandomNumber(1, 10)}`,
-            StoreId: store.id,
+            StoreId: store2.id,
           });
         }
       }
