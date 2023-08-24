@@ -497,6 +497,7 @@ module.exports = {
         .json(errorResponse(error.message, error.status));
     }
   },
+
   register: async (req, res, next) => {
     try {
       let { name, email, age, phone, otp } = req.body;
@@ -504,12 +505,14 @@ module.exports = {
       //let data = `Thank you  for Shopping at $for amount rupees  . 1 Ticket have been successfully Added to your account`;
 
       //return res.status(200).json({ status: 200, data });
-
+      let randomText = generateRandomText(10);
+      //console.log(randomText);
       let register = await models.User.create({
         name,
         email,
         age,
         ph: phone,
+        loginkey: randomText,
       });
 
       let findOTP = await models.VendorTransaction.findOne({
@@ -772,7 +775,13 @@ module.exports = {
           );
 
           if (updateTranscation[0] === 1) {
-            let message = `Thank you ${findUser.name} for Shopping at ${findOTP.Store.name} for amount ${findOTP.billingAmount} rupees  . 1 Ticket have been successfully Added to your account`;
+            let message = `Thank you ${findUser.name} for Shopping at ${
+              findOTP.Store.name
+            } for amount ${
+              findOTP.billingAmount
+            } rupees  . 1 Ticket have been successfully Added to your account \n \n \n To login to your account use secret key ${generateRandomText(
+              10
+            )}`;
             // return res
             //   .status(200)
             //   .json(success({ status: 200, message }, res.statusCode));
@@ -780,13 +789,62 @@ module.exports = {
             return res.status(200).json({ status: 200, message });
           }
         } else {
-          let message = `Thank for Shopping at ${findOTP.Store.name} for amount ${findOTP.billingAmount} rupees . Please Help us with few details to setup your account `;
+          let message = `Thank for Shopping at ${
+            findOTP.Store.name
+          } for amount ${
+            findOTP.billingAmount
+          } rupees . Please Help us with few details to setup your account \n \n \n To login to your account use secret key ${generateRandomText(
+            10
+          )}`;
           // return res
           //   .status(200)
           //   .json(success({ status: 404, message }, res.statusCode));
 
           return res.status(200).json({ status: 404, message });
         }
+      }
+    } catch (error) {
+      if (error.status === undefined) {
+        error.status = 500;
+      }
+      return res
+        .status(error.status)
+        .json(errorResponse(error.message, error.status));
+    }
+  },
+
+  newlogin: async (req, res, next) => {
+    try {
+      let { phone } = req.body;
+
+      let randomText = generateRandomText(10);
+      //console.log(randomText);
+      let login = await models.User.findOne({
+        where: {
+          ph: phone,
+        },
+      });
+
+      if (!login) {
+        return res.status(200).json({ status: 200, data: "User Not Found " });
+      }
+      let updateuser = await models.User.update(
+        {
+          loginkey: randomText,
+        },
+        {
+          where: {
+            id: login.id,
+          },
+        }
+      );
+
+      if (updateuser[0] === 1) {
+        let message = `Hey ${login.name} ! \n \n \n  Good to See You Again here is Secret Kry ${randomText}`;
+        // return res
+        //   .status(200)
+        //   .json(success({ status: 200, message }, res.statusCode));
+        return res.status(200).json({ status: 200, data: message });
       }
     } catch (error) {
       if (error.status === undefined) {
@@ -896,3 +954,15 @@ async function SendMessage(from, message) {
 //u633667574_try1
 // u633667574_try1
 // Abcd1234@1
+function generateRandomText(length) {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=";
+  let randomText = "";
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    randomText += characters.charAt(randomIndex);
+  }
+
+  return randomText;
+}
