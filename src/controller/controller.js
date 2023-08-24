@@ -702,20 +702,35 @@ module.exports = {
   //   }
   // },
 
-  findUser: async (req, res, next) => {
+  Profile: async (req, res, next) => {
     try {
-      let ph = req.params.ph;
+      let { secret } = req.params;
 
       let findUser = await models.User.findOne({
         where: {
-          ph,
+          loginkey: secret,
         },
       });
 
+      if (!findUser) {
+        return res.status(200).json(success("User Not Found", res.statusCode));
+      }
+
+      const count = await models.VendorTransaction.count({
+        where: {
+          userId: findUser.id,
+        },
+      });
+      let obj = {
+        name: findUser.name,
+        phone: findUser.ph,
+        email: findUser.email,
+        age: findUser.age,
+        user: findUser.type,
+        ticket_Submitted: count,
+      };
       if (findUser) {
-        return res
-          .status(200)
-          .json(success({ status: 200, User: findUser.name }, res.statusCode));
+        return res.status(200).json(success(obj, res.statusCode));
       } else {
         return res.status(200).json(success({ status: 404 }, res.statusCode));
       }
