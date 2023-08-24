@@ -501,9 +501,9 @@ module.exports = {
     try {
       let { name, email, age, phone, otp } = req.body;
 
-      return res
-        .status(200)
-        .json({ status: 200, name, email, age, phone, otp });
+      let data = `Thank you  for Shopping at $for amount rupees  . 1 Ticket have been successfully Added to your account`;
+
+      return res.status(200).json({ status: 200, data });
 
       let register = await models.User.create({
         name,
