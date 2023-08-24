@@ -841,7 +841,14 @@ module.exports = {
       });
 
       if (!login) {
-        return res.status(200).json({ status: 200, data: "User Not Found " });
+        return res.status(200).json({
+          status: 200,
+          data: `Hello user ! You are not a member of DGM app.
+        DGM app is exclusively available for shoppers at Raichandani mall!
+        To become a member, shop at any store and ask the cashier for login code after billing.
+        Hope to see you soon!
+        `,
+        });
       }
       let updateuser = await models.User.update(
         {
